@@ -65,37 +65,201 @@ const ResultsCard: React.FC<ResultsCardProps> = ({
   // Reference to the results card for export functionality
   const resultsCardRef = useRef<HTMLDivElement>(null);
 
+  // Function to create a simplified version of the results card for export
+  const createExportableVersion = () => {
+    if (!resultsCardRef.current) return null;
+
+    // Create a new div element that will be a simplified version of the results card
+    const exportDiv = document.createElement('div');
+    exportDiv.style.backgroundColor = '#f0f4f8';
+    exportDiv.style.padding = '24px';
+    exportDiv.style.borderRadius = '8px';
+    exportDiv.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    exportDiv.style.fontFamily = 'Arial, sans-serif';
+    exportDiv.style.color = '#000000';
+    exportDiv.style.width = '800px';
+    exportDiv.style.margin = '0 auto';
+
+    // Clone the content of the results card
+    exportDiv.innerHTML = resultsCardRef.current.innerHTML;
+
+    // Replace all Tailwind classes with inline styles
+    const elements = exportDiv.querySelectorAll('*');
+    elements.forEach(el => {
+      const element = el as HTMLElement;
+
+      // Remove all classes (which might contain Tailwind classes with oklch colors)
+      element.removeAttribute('class');
+
+      // Apply basic styling
+      element.style.margin = '0';
+      element.style.padding = '0';
+
+      // Style headings
+      if (element.tagName === 'H2') {
+        element.style.fontSize = '24px';
+        element.style.fontWeight = 'bold';
+        element.style.marginBottom = '16px';
+        element.style.color = '#1e3a8a'; // dark blue
+      }
+
+      if (element.tagName === 'H3') {
+        element.style.fontSize = '20px';
+        element.style.fontWeight = 'bold';
+        element.style.marginBottom = '12px';
+        element.style.color = '#1e3a8a'; // dark blue
+      }
+
+      // Style buttons (hide them as they're not needed in export)
+      if (element.tagName === 'BUTTON') {
+        element.style.display = 'none';
+      }
+
+      // Style score bars
+      if (element.classList && element.classList.contains('rounded-full')) {
+        if (element.classList.contains('bg-gray-200')) {
+          element.style.backgroundColor = '#e5e7eb';
+          element.style.height = '10px';
+          element.style.width = '100%';
+          element.style.borderRadius = '9999px';
+        } else if (element.classList.contains('bg-blue-600')) {
+          element.style.backgroundColor = '#2563eb';
+          element.style.height = '10px';
+          element.style.borderRadius = '9999px';
+        } else if (element.classList.contains('bg-purple-600')) {
+          element.style.backgroundColor = '#9333ea';
+          element.style.height = '10px';
+          element.style.borderRadius = '9999px';
+        }
+      }
+
+      // Style text colors based on the original classes
+      if (element.classList) {
+        if (element.classList.contains('text-green-600')) {
+          element.style.color = '#16a34a';
+        } else if (element.classList.contains('text-red-600')) {
+          element.style.color = '#dc2626';
+        } else if (element.classList.contains('text-yellow-600')) {
+          element.style.color = '#ca8a04';
+        } else if (element.classList.contains('text-gray-600')) {
+          element.style.color = '#4b5563';
+        } else if (element.classList.contains('text-gray-900')) {
+          element.style.color = '#111827';
+        } else if (element.classList.contains('text-indigo-900')) {
+          element.style.color = '#312e81';
+        } else if (element.classList.contains('text-purple-800')) {
+          element.style.color = '#6b21a8';
+        } else if (element.classList.contains('text-green-800')) {
+          element.style.color = '#166534';
+        } else if (element.classList.contains('text-blue-800')) {
+          element.style.color = '#1e40af';
+        }
+      }
+
+      // Style background colors based on the original classes
+      if (element.classList) {
+        if (element.classList.contains('bg-indigo-50')) {
+          element.style.backgroundColor = '#eef2ff';
+        } else if (element.classList.contains('bg-purple-50')) {
+          element.style.backgroundColor = '#faf5ff';
+        } else if (element.classList.contains('bg-green-50')) {
+          element.style.backgroundColor = '#f0fdf4';
+        } else if (element.classList.contains('bg-blue-50')) {
+          element.style.backgroundColor = '#eff6ff';
+        }
+      }
+
+      // Style borders
+      if (element.classList) {
+        if (element.classList.contains('border-indigo-100')) {
+          element.style.border = '1px solid #e0e7ff';
+        } else if (element.classList.contains('border-purple-200')) {
+          element.style.border = '1px solid #e9d5ff';
+        } else if (element.classList.contains('border-green-200')) {
+          element.style.border = '1px solid #bbf7d0';
+        } else if (element.classList.contains('border-blue-200')) {
+          element.style.border = '1px solid #bfdbfe';
+        }
+      }
+    });
+
+    // Add the exportable div to the document temporarily
+    document.body.appendChild(exportDiv);
+
+    return exportDiv;
+  };
+
   // Function to export as PDF
   const exportAsPDF = () => {
-    if (!resultsCardRef.current) return;
+    try {
+      const exportDiv = createExportableVersion();
+      if (!exportDiv) return;
 
-    html2canvas(resultsCardRef.current).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
+      html2canvas(exportDiv, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false,
+        allowTaint: true,
+        useCORS: true,
+      }).then(canvas => {
+        // Remove the temporary div
+        exportDiv.remove();
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
+
+        // Calculate the width and height to fit in PDF
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save('anti-turing-test-results.pdf');
+      }).catch(error => {
+        // Remove the temporary div in case of error
+        exportDiv.remove();
+        console.error('Error generating PDF:', error);
+        alert('There was an error generating the PDF. Please try again.');
       });
-
-      // Calculate the width and height to fit in PDF
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save('anti-turing-test-results.pdf');
-    });
+    } catch (error) {
+      console.error('Error in PDF export process:', error);
+      alert('There was an error generating the PDF. Please try again.');
+    }
   };
 
   // Function to export as image
   const exportAsImage = () => {
-    if (!resultsCardRef.current) return;
+    try {
+      const exportDiv = createExportableVersion();
+      if (!exportDiv) return;
 
-    html2canvas(resultsCardRef.current).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'anti-turing-test-results.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    });
+      html2canvas(exportDiv, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false,
+        allowTaint: true,
+        useCORS: true,
+      }).then(canvas => {
+        // Remove the temporary div
+        exportDiv.remove();
+
+        const link = document.createElement('a');
+        link.download = 'anti-turing-test-results.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }).catch(error => {
+        // Remove the temporary div in case of error
+        exportDiv.remove();
+        console.error('Error generating image:', error);
+        alert('There was an error generating the image. Please try again.');
+      });
+    } catch (error) {
+      console.error('Error in image export process:', error);
+      alert('There was an error generating the image. Please try again.');
+    }
   };
 
   // Helper function to render a score bar
