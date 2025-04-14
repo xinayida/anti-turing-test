@@ -167,7 +167,7 @@ export default function TestPage() {
 
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4 text-indigo-900">Anti-Turing Test</h1>
-          <p className="text-lg text-gray-900">
+          <p className="text-lg text-white-900">
             {results
               ? 'Your results are ready! See how human-like your responses are.'
               : `Question ${questionDepth} of 3: Respond naturally to the question below. Our AI will analyze your response patterns.`
@@ -178,7 +178,7 @@ export default function TestPage() {
         {isAnalyzing ? (
           <div className="flex flex-col items-center justify-center py-12">
             <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-lg text-gray-900 font-medium">Analyzing your responses...</p>
+            <p className="text-lg text-white-900 font-medium">Analyzing your responses...</p>
           </div>
         ) : results ? (
           <div>

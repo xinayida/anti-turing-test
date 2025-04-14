@@ -102,7 +102,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({
   const ScoreBar = ({ score, label, isHumanScore = true }: { score: number | null | undefined; label: string; isHumanScore?: boolean }) => (
     <div className="mb-2">
       <div className="flex justify-between mb-1">
-        <span>{label}</span>
+        <span className="text-gray-900">{label}</span>
         <span className={getScoreColor(score, isHumanScore)}>{formatScore(score)}</span>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -149,7 +149,7 @@ const ResultsCard: React.FC<ResultsCardProps> = ({
               </span>
             </div>
             <div className="text-xl font-semibold">
-              Classification:
+              <span className='text-black'> Classification:</span>
               <span className={`ml-2 ${
                 classification === 'Human' ? 'text-green-600' :
                 classification === 'AI' ? 'text-red-600' : 'text-yellow-600'

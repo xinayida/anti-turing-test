@@ -8,7 +8,7 @@ export default function Home() {
       <div className="flex flex-col items-center">
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-indigo-900">Anti-Turing Test</h1>
-          <p className="text-xl mb-8 text-gray-900">
+          <p className="text-xl mb-8 text-white-900">
             Can AI detect if you're human? Put your humanity to the test with our
             advanced AI detection system.
           </p>
@@ -57,7 +57,7 @@ export default function Home() {
 
         <div className="mt-16 max-w-4xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-4 text-indigo-800">How It Works</h2>
-          <p className="text-lg mb-8 text-gray-900">
+          <p className="text-lg mb-8 text-white-900">
             Answer a series of open-ended questions while our AI analyzes your responses.
             We'll measure various aspects of your communication style to determine if you're
             human or AI. The results might surprise you!
