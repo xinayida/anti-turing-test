@@ -80,7 +80,7 @@ export class SemanticAnalysisEngine {
     const lexicalDiversity = uniqueTokens.size / tokens.length;
 
     // Calculate average sentence length
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const sentences = text.split(/[.!?]+/).filter((s: string) => s.trim().length > 0);
     const avgSentenceLength = tokens.length / sentences.length;
 
     // Calculate TF-IDF for key terms

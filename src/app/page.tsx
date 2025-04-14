@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import Layout from "./components/Layout";
 
@@ -9,7 +8,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-indigo-900">Anti-Turing Test</h1>
           <p className="text-xl mb-8 text-white-900">
-            Can AI detect if you're human? Put your humanity to the test with our
+            Can AI detect if you&apos;re human? Put your humanity to the test with our
             advanced AI detection system.
           </p>
 
@@ -33,7 +32,7 @@ export default function Home() {
           <div className="bg-blue-50 p-6 rounded-lg shadow-md border border-blue-100">
             <h2 className="text-xl font-semibold mb-4 text-blue-800">Dynamic Semantic Analysis</h2>
             <p className="text-gray-900">
-              Our dual-model architecture uses Grok-3 to generate "AI-style ideal answers" while
+              Our dual-model architecture uses Grok-3 to generate &quot;AI-style ideal answers&quot; while
               traditional NLP models analyze text structure features to identify human patterns.
             </p>
           </div>
@@ -59,7 +58,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-4 text-indigo-800">How It Works</h2>
           <p className="text-lg mb-8 text-white-900">
             Answer a series of open-ended questions while our AI analyzes your responses.
-            We'll measure various aspects of your communication style to determine if you're
+            We&apos;ll measure various aspects of your communication style to determine if you&apos;re
             human or AI. The results might surprise you!
           </p>
 

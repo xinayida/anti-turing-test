@@ -11,14 +11,14 @@ export default function AboutPage() {
           <p>
             The Anti-Turing Test is a revolutionary approach to distinguishing between human and AI-generated text.
             Unlike the traditional Turing Test, which challenges AI to appear human, our test flips the paradigm by
-            challenging humans to prove they're not AI.
+            challenging humans to prove they&apos;re not AI.
           </p>
 
           <h2>Core Functionality Modules</h2>
 
           <h3>1. Dynamic Semantic Analysis Engine</h3>
           <p>
-            Our dual-model architecture leverages GPT-4 to generate "AI-style ideal answers" as a reference point,
+            Our dual-model architecture leverages GPT-4 to generate &quot;AI-style ideal answers&quot; as a reference point,
             while traditional NLP models (LSTM+Attention) analyze text structure features to identify patterns unique
             to human communication.
           </p>
@@ -99,7 +99,7 @@ export default function AboutPage() {
             the unique qualities of human communication that AI still struggles to replicate perfectly.
           </p>
           <p>
-            Whether you're a researcher, educator, content creator, or simply curious about the differences between
+            Whether you&apos;re a researcher, educator, content creator, or simply curious about the differences between
             human and AI communication, our test offers valuable insights into the nature of language, creativity,
             and human cognition.
           </p>

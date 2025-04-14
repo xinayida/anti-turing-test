@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Split text into segments for analysis
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const sentences = text.split(/[.!?]+/).filter((s: string) => s.trim().length > 0);
     const textSegments = [];
 
     // Group sentences into segments of roughly equal length
