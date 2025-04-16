@@ -66,7 +66,7 @@ class GrokClient {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.apiKey}`
           },
-          timeout: options.timeout || 15000 // Default timeout of 15 seconds
+          timeout: options.timeout || 8000 // Default timeout of 8 seconds
         }
       );
 

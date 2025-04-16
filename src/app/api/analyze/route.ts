@@ -55,16 +55,40 @@ export async function POST(request: NextRequest) {
       creativeDivergence
     );
 
-    // Analyze innovation features
-    const semanticElasticityResult = await innovationFeatureMatrix.analyzeSemanticElasticity(text);
-    const emotionalExpressionResult = await innovationFeatureMatrix.analyzeEmotionalExpression(text);
-    const referenceAbilityResult = await innovationFeatureMatrix.analyzeReferenceAbility(text);
-    const ambiguityHandlingResult = await innovationFeatureMatrix.analyzeAmbiguityHandling(text);
-    const creativeThinkingResult = await innovationFeatureMatrix.analyzeCreativeThinking(text);
-    const timePerceptionResult = await innovationFeatureMatrix.analyzeTimePerception(
-      text,
-      responseDelays || []
-    );
+    // Analyze innovation features - run all API calls in parallel
+    const [
+      semanticElasticityResult,
+      emotionalExpressionResult,
+      referenceAbilityResult,
+      ambiguityHandlingResult,
+      creativeThinkingResult,
+      timePerceptionResult
+    ] = await Promise.all([
+      innovationFeatureMatrix.analyzeSemanticElasticity(text).catch(error => {
+        console.error('Error analyzing semantic elasticity:', error);
+        return { score: 0.5, analysis: 'Error analyzing semantic elasticity', humanVsAI: "Human: topic natural transitions, acknowledges knowledge gaps\nAI: rigid logical structure, overuses transition phrases" };
+      }),
+      innovationFeatureMatrix.analyzeEmotionalExpression(text).catch(error => {
+        console.error('Error analyzing emotional expression:', error);
+        return { score: 0.5, analysis: 'Error analyzing emotional expression', humanVsAI: "Human: micro-emotional fluctuations, asymmetric responses\nAI: flat emotional tone, excessive political correctness" };
+      }),
+      innovationFeatureMatrix.analyzeReferenceAbility(text).catch(error => {
+        console.error('Error analyzing reference ability:', error);
+        return { score: 0.5, analysis: 'Error analyzing reference ability', humanVsAI: "Human: concrete examples, idiosyncratic details\nAI: generic examples, references to studies" };
+      }),
+      innovationFeatureMatrix.analyzeAmbiguityHandling(text).catch(error => {
+        console.error('Error analyzing ambiguity handling:', error);
+        return { score: 0.5, analysis: 'Error analyzing ambiguity handling', humanVsAI: "Human: temporary contradictions, self-correction\nAI: forced consistency, avoidance of uncertainty" };
+      }),
+      innovationFeatureMatrix.analyzeCreativeThinking(text).catch(error => {
+        console.error('Error analyzing creative thinking:', error);
+        return { score: 0.5, analysis: 'Error analyzing creative thinking', humanVsAI: "Human: cross-domain analogies, imperfect but novel ideas\nAI: pattern-based innovation, formulaic creativity" };
+      }),
+      innovationFeatureMatrix.analyzeTimePerception(text, responseDelays || []).catch(error => {
+        console.error('Error analyzing time perception:', error);
+        return { score: 0.5, analysis: 'Error analyzing time perception', humanVsAI: "Human: reasonable delays, vague time references\nAI: instant responses, precise time references" };
+      })
+    ]);
 
     // Calculate overall human-likeness score
     const innovationFeatureScore = innovationFeatureMatrix.calculateOverallScore({
