@@ -48,7 +48,7 @@ class GrokClient {
     this.model = model;
   }
 
-  async chat(messages: GrokMessage[], options: { temperature?: number; max_tokens?: number } = {}) {
+  async chat(messages: GrokMessage[], options: { temperature?: number; max_tokens?: number; timeout?: number } = {}) {
     try {
       const requestData: GrokCompletionRequest = {
         messages,
@@ -65,7 +65,8 @@ class GrokClient {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.apiKey}`
-          }
+          },
+          timeout: options.timeout || 15000 // Default timeout of 15 seconds
         }
       );
 
